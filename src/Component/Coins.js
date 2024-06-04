@@ -11,7 +11,7 @@ export function Coins() {
 
   const coinOnChange = (event) => {
     setCoinPrice(event.target.value);
-  }
+  };
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -19,16 +19,16 @@ export function Coins() {
     if (newMoney) {
       setMyMoney(Number(newMoney));
     }
-  }
+  };
 
   useEffect(() => {
     fetch("https://api.coinpaprika.com/v1/tickers")
-    .then(response => response.json())
-    .then((json) => {
-      setCoins(json);      
-      setLoading(false);
-      setCoinPrice(json[0].quotes.USD.price);
-    });
+      .then((response) => response.json())
+      .then((json) => {
+        setCoins(json);
+        setLoading(false);
+        setCoinPrice(json[0].quotes.USD.price);
+      });
   }, []);
 
   return (
@@ -36,27 +36,27 @@ export function Coins() {
       <h1>The Coins! ({coins.length})</h1>
       <h2>You have {myMoney}$</h2>
       <form onSubmit={onSubmit}>
-        <input 
+        <input
           type="text"
-          placeholder="Input your money." 
+          placeholder="Input your money."
           ref={moneyInputRef}
         />
         <button>Add my money</button>
       </form>
       {loading ? (
         <strong>Loading...</strong>
-        ) : (
-          <div>
-            <p>You can buy this coin {myMoney / coinPrice}</p>
-            <select onChange={coinOnChange}>
-              {coins.map((coin) => (
-                <option key={coin.id} value={coin.quotes.USD.price}>
-                  {coin.name} ({coin.symbol}) : ${coin.quotes.USD.price}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+      ) : (
+        <div>
+          <p>You can buy this coin {myMoney / coinPrice}</p>
+          <select onChange={coinOnChange}>
+            {coins.map((coin) => (
+              <option key={coin.id} value={coin.quotes.USD.price}>
+                {coin.name} ({coin.symbol}) : ${coin.quotes.USD.price}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
     </div>
-  )
+  );
 }
